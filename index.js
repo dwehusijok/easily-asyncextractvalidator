@@ -1,13 +1,12 @@
-function buildTree(preorder, inorder) {
-  if (preorder.length === 0 || inorder.length === 0) return null;
-  const rootVal = preorder[0];
-  const root = new TreeNode(rootVal);
-  const index = inorder.indexOf(rootVal);
-  const leftInorder = inorder.slice(0, index);
-  const rightInorder = inorder.slice(index + 1);
-  const leftPreorder = preorder.slice(1, 1 + leftInorder.length);
-  const rightPreorder = preorder.slice(1 + leftInorder.length);
-  root.left = buildTree(leftPreorder, leftInorder);
-  root.right = buildTree(rightPreorder, rightInorder);
-  return root;
+function longestCommonSubsequence(text1, text2) {
+  const m = text1.length;
+  const n = text2.length;
+  const dp = Array.from(Array(m + 1), () => Array(n + 1).fill(0));
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (text1[i - 1] === text2[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;
+      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m][n];
 }
