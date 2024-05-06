@@ -1,12 +1,20 @@
-function longestCommonSubsequence(text1, text2) {
-  const m = text1.length;
-  const n = text2.length;
-  const dp = Array.from(Array(m + 1), () => Array(n + 1).fill(0));
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      if (text1[i - 1] === text2[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;
-      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+function zigzagLevelOrder(root) {
+  if (!root) return [];
+  const result = [];
+  const queue = [root];
+  let zigzag = false;
+  while (queue.length) {
+    const levelSize = queue.length;
+    const currentLevel = [];
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      if (zigzag) currentLevel.unshift(node.val);
+      else currentLevel.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
+    result.push(currentLevel);
+    zigzag = !zigzag;
   }
-  return dp[m][n];
+  return result;
 }
