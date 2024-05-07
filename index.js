@@ -1,20 +1,33 @@
-function zigzagLevelOrder(root) {
-  if (!root) return [];
+function solveNQueens(n) {
   const result = [];
-  const queue = [root];
-  let zigzag = false;
-  while (queue.length) {
-    const levelSize = queue.length;
-    const currentLevel = [];
-    for (let i = 0; i < levelSize; i++) {
-      const node = queue.shift();
-      if (zigzag) currentLevel.unshift(node.val);
-      else currentLevel.push(node.val);
-      if (node.left) queue.push(node.left);
-      if (node.right) queue.push(node.right);
-    }
-    result.push(currentLevel);
-    zigzag = !zigzag;
-  }
+  const board = Array.from({ length: n }, () =>
+    Array.from({ length: n }, () => "."),
+  );
+  backtrack(0);
   return result;
+  function backtrack(row) {
+    if (row === n) {
+      result.push(board.map((row) => row.join("")));
+      return;
+    }
+    for (let col = 0; col < n; col++) {
+      if (isValid(row, col)) {
+        board[row][col] = "Q";
+        backtrack(row + 1);
+        board[row][col] = ".";
+      }
+    }
+  }
+  function isValid(row, col) {
+    for (let i = 0; i < row; i++) {
+      if (board[i][col] === "Q") return false;
+    }
+    for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+      if (board[i][j] === "Q") return false;
+    }
+    for (let i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+      if (board[i][j] === "Q") return false;
+    }
+    return true;
+  }
 }
