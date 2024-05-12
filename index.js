@@ -1,13 +1,8 @@
-function maxSlidingWindow(nums, k) {
-  const result = [];
-  const queue = [];
-  for (let i = 0; i < nums.length; i++) {
-    while (queue.length && nums[i] >= nums[queue[queue.length - 1]]) {
-      queue.pop();
-    }
-    queue.push(i);
-    if (queue[0] === i - k) queue.shift();
-    if (i >= k - 1) result.push(nums[queue[0]]);
+function minCostClimbingStairs(cost) {
+  const n = cost.length;
+  const dp = new Array(n + 1).fill(0);
+  for (let i = 2; i <= n; i++) {
+    dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
   }
-  return result;
+  return dp[n];
 }
